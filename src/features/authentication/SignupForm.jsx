@@ -28,10 +28,10 @@ function SignupForm() {
 
   const { isLoading, signup } = useSignUp();
 
-  const onSubmit = ({ fullname, email, password }) => {
+  const onSubmit = ({ fullName, email, password }) => {
     // if (!fullname || !email || !password) return;
     signup(
-      { fullname, email, password },
+      { fullName, email, password },
       {
         onSettled: reset,
       }
@@ -88,10 +88,6 @@ function SignupForm() {
           disabled={isLoading}
           {...register("passwordConfirm", {
             required: "This field is required",
-            validate: (value) => {
-              console.log(value);
-              value === getValues().password || "Password are not match";
-            },
             validate: (value) =>
               value === getValues().password || "Passwords need to match",
           })}
@@ -100,7 +96,12 @@ function SignupForm() {
 
       <SpecialFormRow>
         {/* type is an HTML attribute! */}
-        <Button variation="secondary" type="reset" disabled={isLoading}>
+        <Button
+          variation="secondary"
+          type="reset"
+          disabled={isLoading}
+          onClick={reset}
+        >
           Cancel
         </Button>
         <Button disabled={isLoading}>Create new user</Button>

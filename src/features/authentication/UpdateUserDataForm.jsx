@@ -1,12 +1,13 @@
 import { useState } from "react";
+import { useUser } from "./useUser";
+import { useUpdateUser } from "./useUpdateUser";
+import { useNavigate } from "react-router-dom";
 
 import Button from "../../ui/Button";
 import FileInput from "../../ui/FileInput";
 import Form from "../../ui/Form";
 import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Input";
-
-import { useUser } from "./useUser";
 
 function UpdateUserDataForm() {
   // We don't need the loading state, and can immediately use the user data, because we know that it has already been loaded at this point
@@ -17,38 +18,70 @@ function UpdateUserDataForm() {
     },
   } = useUser();
 
+  const { isLoading, updateUser } = useUpdateUser();
+
   const [fullName, setFullName] = useState(currentFullName);
   const [avatar, setAvatar] = useState(null);
+  const [changeState, setChangeState] = useState(false);
+  const navigate = useNavigate();
 
   function handleSubmit(e) {
     e.preventDefault();
+    if (!fullName) return;
+    updateUser(
+      { fullName, avatar },
+      {
+        onSuccess: () => {
+          setAvatar("");
+          e.target.reset();
+        },
+        onSettled: () => navigate("/users"),
+      }
+    );
   }
+
+  const handleCancel = () => {
+    setAvatar("");
+    setFullName(currentFullName);
+  };
 
   return (
     <Form onSubmit={handleSubmit}>
       <FormRow label="Email address">
         <Input value={email} disabled />
       </FormRow>
+
       <FormRow label="Full name">
         <Input
           type="text"
           value={fullName}
           onChange={(e) => setFullName(e.target.value)}
+          onBlur={(e) => setChangeState(true)}
           id="fullName"
+          disabled={isLoading}
         />
       </FormRow>
+
       <FormRow label="Avatar image">
         <FileInput
           id="avatar"
           accept="image/*"
           onChange={(e) => setAvatar(e.target.files[0])}
+          onBlur={(e) => setChangeState(true)}
+          disabled={isLoading}
         />
       </FormRow>
+
       <FormRow>
-        <Button type="reset" variation="secondary">
+        <Button
+          type="reset"
+          variation="secondary"
+          disabled={isLoading}
+          onClick={handleCancel}
+        >
           Cancel
         </Button>
-        <Button>Update account</Button>
+        <Button disabled={isLoading || !changeState}>Update account</Button>
       </FormRow>
     </Form>
   );
