@@ -108,7 +108,7 @@ export async function getStaysTodayActivity() {
   }
   return data;
 }
-
+/////////////////////////////////
 export async function updateBooking(id, obj) {
   const { data, error } = await supabase
     .from("bookings")
@@ -123,7 +123,7 @@ export async function updateBooking(id, obj) {
   }
   return data;
 }
-
+/////////////////////////////////
 export async function deleteBooking(id) {
   // REMEMBER RLS POLICIES
   const { data, error } = await supabase
