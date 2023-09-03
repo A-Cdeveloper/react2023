@@ -16,8 +16,8 @@ function BookingTable() {
   // console.log(bookings);
   //console.log(count);
 
-  if (bookings && !bookings.length) return <Empty resource="bookings" />;
   if (isLoading) return <Spinner />;
+  if (bookings && !bookings.length) return <Empty resource="bookings" />;
 
   // // FILTER
   // const filteredValue = searchParams.get("status");

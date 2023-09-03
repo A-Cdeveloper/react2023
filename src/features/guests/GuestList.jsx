@@ -1,8 +1,8 @@
-import styled from 'styled-components';
-import { useGuests } from 'features/guests/useGuests';
-import Pagination from 'ui/Pagination';
-import Spinner from 'ui/Spinner';
-import GuestListItem from './GuestListItem';
+import styled from "styled-components";
+import { useGuests } from "../../features/guests/useGuests";
+import Pagination from "../../ui/Pagination";
+import Spinner from "../../ui/Spinner";
+import GuestListItem from "./GuestListItem";
 
 const StyledGuestList = styled.div`
   border: 1px solid var(--color-grey-200);
@@ -30,6 +30,8 @@ const PaginationContainer = styled.div`
 
 function GuestList({ onClick }) {
   const { isLoading, guests, count } = useGuests();
+
+  console.log(count);
 
   if (isLoading) return <Spinner />;
   if (count === undefined) return null;
